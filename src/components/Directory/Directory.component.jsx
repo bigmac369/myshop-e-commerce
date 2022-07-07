@@ -24,10 +24,10 @@ const categories = [
   },
   {
     id: 4,
-    title: "jewellery",
+    title: "jewelery",
     imageUrl:
       "https://media.herworld.com/public/2018/04/classic-investment-pieces-banner.jpg",
-    route: "shop/jewellery",
+    route: "shop/jewelery",
   },
 ];
 

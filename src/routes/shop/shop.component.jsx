@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useSelector } from "react";
 import ProductListing from "../../components/ProductListing/ProductListing";
 import Category from "../../components/Category/Category";
 import { Routes, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch } from "react-redux/es/exports";
 import { fetchProduct } from "../../features/productSlice";
+import { getModifiedProducts } from "../../features/productSlice";
+import Product from "../../components/Product/Product";
+import ProductDetail from "../../components/ProductDetail/ProductDetail";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -13,6 +16,33 @@ const Shop = () => {
     const data = await response.json();
 
     dispatch(fetchProduct(data));
+
+    const allProducts = data;
+
+    const menProducts = allProducts.filter((product) => {
+      return product.category === "men's clothing";
+    });
+
+    const womenProducts = allProducts.filter((product) => {
+      return product.category === "women's clothing";
+    });
+
+    const electronicsProducts = allProducts.filter((product) => {
+      return product.category === "electronics";
+    });
+
+    const jeweleryProducts = allProducts.filter((product) => {
+      return product.category === "jewelery";
+    });
+
+    const finalisedProducts = {
+      mens: menProducts,
+      womens: womenProducts,
+      electronics: electronicsProducts,
+      jewelery: jeweleryProducts,
+    };
+
+    dispatch(getModifiedProducts(finalisedProducts));
   };
 
   useEffect(() => {
@@ -22,6 +52,7 @@ const Shop = () => {
     <Routes>
       <Route index element={<ProductListing />} />
       <Route path=":category" element={<Category />} />
+      <Route path=":category/:productId" element={<ProductDetail />} />
     </Routes>
   );
 };
