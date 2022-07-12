@@ -8,9 +8,9 @@ const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   // console.log(category);
   // console.log(product);
-  const handleAddToCart = (product) => {
-    dispatch(addItemToCart(product));
-  };
+  // const handleAddToCart = (product) => {
+  //   dispatch(addItemToCart(product));
+  // };
   const { title, price, image, id } = product;
   const modifiedTitle =
     title.length > 30 ? `${title.substring(0, 40)}...` : title;
@@ -28,12 +28,12 @@ const ProductCard = ({ product }) => {
           <p className="p-2">${price}</p>
         </div>
       </Link>
-      <div
+      {/* <div
         onClick={() => handleAddToCart(product)}
         className="bg-orange-400 py-4 rounded-md cursor-pointer"
       >
         <h2 className="text-center">ADD TO CART</h2>
-      </div>
+      </div> */}
     </div>
   );
 };

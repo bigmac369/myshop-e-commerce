@@ -1,18 +1,49 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  removeFromCart,
+  decreaseFromCart,
+  addItemToCart,
+  clearCart,
+  getTotalItems,
+  getTotalAmount,
+} from "../../features/cartSlice";
 
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartTotalAmount = useSelector((state) => state.cart.cartTotalAmount);
+
+  useEffect(() => {
+    console.log("ran!");
+    dispatch(getTotalItems());
+    dispatch(getTotalAmount());
+  }, [cartItems, cartTotalAmount]);
+
+  const handleRemoveFromCart = (item) => {
+    dispatch(removeFromCart(item));
+  };
+
+  const handleDecreaseFromCart = (item) => {
+    dispatch(decreaseFromCart(item));
+  };
+
+  const handleIncreaseToCart = (item) => {
+    dispatch(addItemToCart(item));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
 
   return (
     <div className="cart-container py-8 px-16">
       <h2 className="font-normal text-3xl text-center">Shopping Cart</h2>
       {cartItems.length === 0 ? (
-        <div className="cart-empty">
+        <div className="cart-empty text-[20px] mt-[2rem] text-[rgb(84,84,84)] flex flex-col items-center">
           <p>Your cart is currently empty</p>
           <div className="start-shopping">
             <Link to="/">
@@ -49,7 +80,10 @@ const Checkout = () => {
                   <div>
                     <h3 className="font-normal">name</h3>
                     <p>description</p>
-                    <button className="border-none outline-none mt-[0.7rem] cursor-pointer bg-none text-gray-500 hover:text-black">
+                    <button
+                      onClick={() => handleRemoveFromCart(item)}
+                      className="border-none outline-none mt-[0.7rem] cursor-pointer bg-none text-gray-500 hover:text-black"
+                    >
                       Remove
                     </button>
                   </div>
@@ -57,29 +91,40 @@ const Checkout = () => {
 
                 <div className="cart-item-price">{item.price}</div>
                 <div className="cart-product-quantity flex items-start justify-center w-[130px] max-w-full border-solid border-[0.5px] border-[rgb(177,177,177)] rounded-[5px]">
-                  <button className="border-none outline-none bg-none py-[0.7rem] px-[1.5rem] cursor-pointer">
+                  <button
+                    onClick={() => handleDecreaseFromCart(item)}
+                    className="border-none outline-none bg-none py-[0.7rem] px-[1.5rem] cursor-pointer"
+                  >
                     -
                   </button>
                   <div className="count py-[0.7rem]">{item.cartQuantity}</div>
-                  <button className="border-none outline-none bg-none py-[0.7rem] px-[1.5rem] cursor-pointer">
+                  <button
+                    onClick={() => handleIncreaseToCart(item)}
+                    className="border-none outline-none bg-none py-[0.7rem] px-[1.5rem] cursor-pointer"
+                  >
                     +
                   </button>
                 </div>
 
                 <div className="cart-product-total-price justify-self-end pr-[0.5rem] font-bold">
-                  ${item.price * item.cartQuantity}
+                  ${(item.price * item.cartQuantity).toFixed(2)}
                 </div>
               </div>
             ))}
           </div>
           <div className="cart-summary flex justify-between items-start border-solid border-t-[1px] border-[rgb(187,187,187)] pt-[2rem]">
-            <button className="clear-cart w-[130px] max-w-full h-[40px] rounded-[5px] font-normal tracking-[1.15px] border-solid border-[0.5px] border-[rgb(177,177,177)] text-gray-400 bg-none outline-none cursor-pointer">
+            <button
+              onClick={() => handleClearCart()}
+              className="clear-cart w-[130px] max-w-full h-[40px] rounded-[5px] font-normal tracking-[1.15px] border-solid border-[0.5px] border-[rgb(177,177,177)] text-gray-400 bg-none outline-none cursor-pointer"
+            >
               Clear Cart
             </button>
             <div className="cart-checkout w-[270px] w-max-full">
               <div className="sub-total flex justify-between text-[20px]">
                 <span>Subtotal</span>
-                <span className="amount font-bold">${cartTotalAmount}</span>
+                <span className="amount font-bold">
+                  ${cartTotalAmount.toFixed(2)}
+                </span>
               </div>
               <p className="text-[14px] font-extralight my-[0.5rem]">
                 Taxes and shipping calculated at checkout

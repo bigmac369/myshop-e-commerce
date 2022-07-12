@@ -10,6 +10,7 @@ const CartIcon = () => {
   const goToCheckoutHandler = () => {
     navigate("/checkout");
   };
+
   return (
     <div onClick={goToCheckoutHandler} className="relative ml-4 cursor-pointer">
       <BsCart size={35} />

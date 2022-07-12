@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,12 +6,19 @@ import {
   removeSelectedProduct,
 } from "../../features/productSlice";
 
+import { addItemToCart, getTotalItems } from "../../features/cartSlice";
+
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const ProductDetail = () => {
   const product = useSelector((state) => state.product.selectedProduct);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const { productId } = useParams();
   const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    dispatch(addItemToCart(product));
+  };
 
   const { id, title, price, description, category, image } = product;
 
@@ -32,6 +39,10 @@ const ProductDetail = () => {
     };
   }, [productId]);
 
+  useEffect(() => {
+    dispatch(getTotalItems());
+  }, [cartItems]);
+
   return (
     <div className="h-[90vh] flex justify-center items-center">
       <div className="bg-[white] flex h-2/3 w-[60%]">
@@ -43,7 +54,10 @@ const ProductDetail = () => {
           <p className="pt-6">{description}</p>
           <h2 className="pt-12 font-bold text-xl">${price}</h2>
 
-          <div className="flex mt-auto bg-orange-400 w-fit ml-auto p-3 rounded-xl cursor-pointer">
+          <div
+            onClick={() => handleAddToCart(product)}
+            className="flex mt-auto bg-orange-400 w-fit ml-auto p-3 rounded-xl cursor-pointer"
+          >
             <AddShoppingCartIcon />
             <div className="font-medium ml-2">Add to Cart</div>
           </div>

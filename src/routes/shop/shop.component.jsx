@@ -1,4 +1,4 @@
-import React, { useEffect, useSelector } from "react";
+import React, { useEffect } from "react";
 import ProductListing from "../../components/ProductListing/ProductListing";
 import Category from "../../components/Category/Category";
 import { Routes, Route } from "react-router-dom";
@@ -57,9 +57,3 @@ const Shop = () => {
 };
 
 export default Shop;
-
-{
-  /* <div className="flex justify-center mt-6">
-  <ProductListing />
-</div>; */
-}
