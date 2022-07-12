@@ -5,7 +5,6 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";
 import { fetchProduct } from "../../features/productSlice";
 import { getModifiedProducts } from "../../features/productSlice";
-import Product from "../../components/Product/Product";
 import ProductDetail from "../../components/ProductDetail/ProductDetail";
 
 const Shop = () => {
